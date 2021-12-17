@@ -313,19 +313,19 @@ INT_PTR CALLBACK WindipDialogProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 	{
 	case WM_INITDIALOG:
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, lParam);
-		SetTimer(hWnd, 0, 200, NULL);
 		refresh_dialog_title(hWnd);
 		set_icon_to_target_icon(hWnd, (HWND)lParam);
 		update_target_style((HWND)lParam);
 		initialize_control_values(hWnd, (HWND)lParam);
-		break;
+		SetTimer(hWnd, 0, 200, NULL);
+		return TRUE;
 
 	case WM_TIMER:
 		if (!IsWindow(get_target_handle(hWnd)))
 		{
 			EndDialog(hWnd, 0);
 		}
-		break;
+		return TRUE;
 
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
@@ -343,15 +343,15 @@ INT_PTR CALLBACK WindipDialogProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 			PostMessage(GetParent(hWnd), WM_COMMAND, IDC_REFRESH, NULL);
 			break;
 		}
-		break;
+		return TRUE;
 			
 	case WM_NOTIFY:
 		on_notify(hWnd, lParam);
-		break;
+		return TRUE;
 
 	case WM_CLOSE:
 		EndDialog(hWnd, 0);
-		break;
+		return TRUE;
 	}
 
 	return FALSE;

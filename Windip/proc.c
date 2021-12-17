@@ -278,6 +278,7 @@ static LRESULT root_window_notify(HWND hWnd, LPARAM lParam)
 
 		LVITEM lvi = { 0 };
 		lvi.iItem = activate->iItem;
+		lvi.mask = LVIF_PARAM; /* lParam is null in release mode unless this is specified for some reason */
 		ListView_GetItem(data->list_data.hListView, &lvi);
 
 		HWND hDlg = CreateDialogParam(GetModuleHandle(NULL), 
